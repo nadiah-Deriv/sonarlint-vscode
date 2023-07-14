@@ -75,7 +75,7 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
   }
 
   getFilePatternsForAnalysis(folderUri: string): Promise<protocol.GetFilePatternsForAnalysisResponse> {
-    return this.sendRequest(protocol.GetFilePatternsForAnalysis.type, { folderUri });
+    return this.sendRequest(protocol.GetFilePatternsForAnalysis.type, { uri: folderUri });
   }
 
   getAllowedHotspotStatuses(hotspotKey: string, folderUri: string,
@@ -93,8 +93,12 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
       { configurationScopeId, issueKey, newStatus, fileUri, isTaintIssue });
   }
 
-  addIssueComment(configurationScopeId: string, issueKey: string, text: string): Promise<void>{
+  addIssueComment(configurationScopeId: string, issueKey: string, text: string): Promise<void> {
     return this.sendNotification(protocol.AddIssueComment.type, {configurationScopeId, issueKey, text});
+  }
+
+  reopenResolvedLocalIssues(fileUri: string): Promise<void> {
+    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, {uri: fileUri});
   }
 
   changeHotspotStatus(hotspotKey: string, newStatus: string, fileUri: string): Promise<void> {
@@ -102,7 +106,7 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
   }
 
   checkLocalHotspotsDetectionSupported(folderUri: string): Promise<protocol.CheckLocalDetectionSupportedResponse> {
-    return this.sendRequest(protocol.CheckLocalDetectionSupported.type, { folderUri });
+    return this.sendRequest(protocol.CheckLocalDetectionSupported.type, { uri: folderUri });
   }
 
   getHotspotDetails(ruleKey, hotspotId, fileUri): Promise<protocol.ShowRuleDescriptionParams> {

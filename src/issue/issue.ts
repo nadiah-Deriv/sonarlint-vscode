@@ -32,4 +32,8 @@ export class IssueService {
   addComment(configScopeId: string, issueKey: string, text: string): Promise<void> {
     return this.languageClient.addIssueComment(configScopeId, issueKey, text);
   }
+
+  reopenLocalIssues(fileUri: string): Promise<void> {
+    return this.languageClient.reopenResolvedLocalIssues(fileUri);
+  }
 }

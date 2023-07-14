@@ -460,6 +460,15 @@ function registerCommands(context: VSCode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
+    VSCode.commands.registerCommand(
+      Commands.REOPEN_LOCAL_ISSUES,() => {
+        const currentlyOpenFilePath = VSCode.window.activeTextEditor.document.fileName;
+        const fileUri = VSCode.Uri.file(currentlyOpenFilePath);
+        IssueService.instance.reopenLocalIssues(fileUri.toString())
+      }
+)
+);
+  context.subscriptions.push(
     VSCode.commands.registerCommand(Commands.REMOVE_CONNECTION, async connection => {
       const connectionDeleted = await ConnectionSettingsService.instance.removeConnection(connection);
       if (connectionDeleted) {

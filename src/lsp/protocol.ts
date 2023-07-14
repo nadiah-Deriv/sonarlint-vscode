@@ -270,7 +270,7 @@ export interface CheckLocalDetectionSupportedResponse {
 }
 
 export namespace CheckLocalDetectionSupported {
-  export const type = new lsp.RequestType<FolderUriParams, CheckLocalDetectionSupportedResponse, null>(
+  export const type = new lsp.RequestType<UriParams, CheckLocalDetectionSupportedResponse, null>(
     'sonarlint/checkLocalDetectionSupported'
   );
 }
@@ -430,8 +430,8 @@ export namespace ForgetFolderHotspots {
   export const type = new lsp.NotificationType('sonarlint/forgetFolderHotspots');
 }
 
-export interface FolderUriParams {
-  folderUri: string;
+export interface UriParams {
+  uri: string;
 }
 
 export interface GetFilePatternsForAnalysisResponse {
@@ -439,7 +439,7 @@ export interface GetFilePatternsForAnalysisResponse {
 }
 
 export namespace GetFilePatternsForAnalysis {
-  export const type = new lsp.RequestType<FolderUriParams, GetFilePatternsForAnalysisResponse, null>(
+  export const type = new lsp.RequestType<UriParams, GetFilePatternsForAnalysisResponse, null>(
     'sonarlint/listSupportedFilePatterns'
   );
 }
@@ -469,6 +469,10 @@ export interface AddIssueCommentParams {
   configurationScopeId: string;
   issueKey: string;
   text: string;
+}
+
+export namespace ReopenResolvedLocalIssues {
+  export const type = new lsp.NotificationType<UriParams>('sonarlint/reopenResolvedLocalIssues')
 }
 
 export namespace SetIssueStatus {

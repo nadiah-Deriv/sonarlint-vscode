@@ -357,6 +357,11 @@
         "category": "SonarLint"
       },
       {
+        "command": "SonarLint.ReopenLocalIssues",
+        "title": "Reopen Local Issues for current file",
+        "category": "SonarLint"
+      },
+      {
         "command": "SonarLint.ConfigureCompilationDatabase",
         "title": "Configure the compilation database for C and C++ analysis",
         "category": "SonarLint"
