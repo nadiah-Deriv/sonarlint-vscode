@@ -463,8 +463,9 @@ function registerCommands(context: VSCode.ExtensionContext) {
     VSCode.commands.registerCommand(
       Commands.REOPEN_LOCAL_ISSUES,() => {
         const currentlyOpenFilePath = VSCode.window.activeTextEditor.document.fileName;
-        const fileUri = VSCode.Uri.file(currentlyOpenFilePath);
-        IssueService.instance.reopenLocalIssues(fileUri.toString())
+        //TODO better to get configurationScopeId straight in SonarLintLanguageServer using workspaceFoldersManager?
+        const configurationScopeId = VSCode.workspace.workspaceFolders[0].uri.toString();
+        IssueService.instance.reopenLocalIssues(currentlyOpenFilePath, configurationScopeId)
       }
 )
 );

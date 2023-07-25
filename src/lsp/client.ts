@@ -87,18 +87,18 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
     return this.sendRequest(protocol.GetSuggestedBinding.type, { configScopeId, connectionId });
   }
 
-  changeIssueStatus(configurationScopeId: string, issueKey: string,
+  changeIssueStatus(configurationScopeId: string, issueId: string,
                     newStatus: string, fileUri: string, isTaintIssue: boolean): Promise<void> {
     return this.sendNotification(protocol.SetIssueStatus.type,
-      { configurationScopeId, issueKey, newStatus, fileUri, isTaintIssue });
+      { configurationScopeId, issueId, newStatus, fileUri, isTaintIssue });
   }
 
   addIssueComment(configurationScopeId: string, issueKey: string, text: string): Promise<void> {
     return this.sendNotification(protocol.AddIssueComment.type, {configurationScopeId, issueKey, text});
   }
 
-  reopenResolvedLocalIssues(fileUri: string): Promise<void> {
-    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, {uri: fileUri});
+  reopenResolvedLocalIssues(filePath: string, configurationScopeId: string): Promise<void> {
+    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, {filePath, configurationScopeId});
   }
 
   changeHotspotStatus(hotspotKey: string, newStatus: string, fileUri: string): Promise<void> {

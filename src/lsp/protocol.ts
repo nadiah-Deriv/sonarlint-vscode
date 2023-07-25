@@ -472,7 +472,12 @@ export interface AddIssueCommentParams {
 }
 
 export namespace ReopenResolvedLocalIssues {
-  export const type = new lsp.NotificationType<UriParams>('sonarlint/reopenResolvedLocalIssues')
+  export const type = new lsp.NotificationType<ReopenAllIssuesForFileParams>('sonarlint/reopenResolvedLocalIssues')
+}
+
+export interface ReopenAllIssuesForFileParams {
+  filePath: string;
+  configurationScopeId: string;
 }
 
 export namespace SetIssueStatus {
@@ -481,7 +486,7 @@ export namespace SetIssueStatus {
 
 export interface SetIssueStatusParams {
   configurationScopeId: string;
-  issueKey: string;
+  issueId: string;
   newStatus: string;
   fileUri: string;
   isTaintIssue: boolean;
