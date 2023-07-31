@@ -461,16 +461,6 @@ export namespace GetSuggestedBinding {
   );
 }
 
-export namespace AddIssueComment {
-  export const type = new lsp.NotificationType<AddIssueCommentParams>('sonarlint/addIssueComment');
-}
-
-export interface AddIssueCommentParams {
-  configurationScopeId: string;
-  issueKey: string;
-  text: string;
-}
-
 export namespace ReopenResolvedLocalIssues {
   export const type = new lsp.NotificationType<ReopenAllIssuesForFileParams>('sonarlint/reopenResolvedLocalIssues')
 }
@@ -489,6 +479,7 @@ export interface SetIssueStatusParams {
   issueId: string;
   newStatus: string;
   fileUri: string;
+  comment: string;
   isTaintIssue: boolean;
 }
 

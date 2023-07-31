@@ -25,12 +25,8 @@ export class IssueService {
   }
 
   changeIssueStatus(configScopeId: string, issueKey: string,
-                    newStatus: string, fileUri: string, isTaintIssue: boolean): Promise<void> {
-    return this.languageClient.changeIssueStatus(configScopeId, issueKey, newStatus, fileUri, isTaintIssue);
-  }
-
-  addComment(configScopeId: string, issueKey: string, text: string): Promise<void> {
-    return this.languageClient.addIssueComment(configScopeId, issueKey, text);
+                    newStatus: string, fileUri: string, comment: string, isTaintIssue: boolean): Promise<void> {
+    return this.languageClient.changeIssueStatus(configScopeId, issueKey, newStatus, fileUri, comment, isTaintIssue);
   }
 
   reopenLocalIssues(filePath: string, configurationScopeId: string): Promise<void> {
