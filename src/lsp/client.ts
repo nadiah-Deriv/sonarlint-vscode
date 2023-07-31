@@ -78,8 +78,11 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
     return this.sendRequest(protocol.GetFilePatternsForAnalysis.type, { uri: folderUri });
   }
 
-  getAllowedHotspotStatuses(hotspotKey: string, folderUri: string,
-                            fileUri: string): Promise<protocol.GetAllowedHotspotStatusesResponse> {
+  getAllowedHotspotStatuses(
+    hotspotKey: string,
+    folderUri: string,
+    fileUri: string
+  ): Promise<protocol.GetAllowedHotspotStatusesResponse> {
     return this.sendRequest(protocol.GetAllowedHotspotStatuses.type, { hotspotKey, folderUri, fileUri });
   }
 
@@ -87,14 +90,26 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
     return this.sendRequest(protocol.GetSuggestedBinding.type, { configScopeId, connectionId });
   }
 
-  changeIssueStatus(configurationScopeId: string, issueId: string,
-                    newStatus: string, fileUri: string, comment: string, isTaintIssue: boolean): Promise<void> {
-    return this.sendNotification(protocol.SetIssueStatus.type,
-      { configurationScopeId, issueId, newStatus, fileUri, comment, isTaintIssue });
+  changeIssueStatus(
+    configurationScopeId: string,
+    issueId: string,
+    newStatus: string,
+    fileUri: string,
+    comment: string,
+    isTaintIssue: boolean
+  ): Promise<void> {
+    return this.sendNotification(protocol.SetIssueStatus.type, {
+      configurationScopeId,
+      issueId,
+      newStatus,
+      fileUri,
+      comment,
+      isTaintIssue
+    });
   }
 
   reopenResolvedLocalIssues(filePath: string, configurationScopeId: string): Promise<void> {
-    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, {filePath, configurationScopeId});
+    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, { configurationScopeId, filePath });
   }
 
   changeHotspotStatus(hotspotKey: string, newStatus: string, fileUri: string): Promise<void> {

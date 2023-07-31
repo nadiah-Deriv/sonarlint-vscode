@@ -340,11 +340,13 @@ function suggestBinding(params: protocol.SuggestBindingParams) {
 }
 
 function registerCommands(context: VSCode.ExtensionContext) {
-  context.subscriptions.push(VSCode.commands.registerCommand('SonarLint.OpenSample', async () => {
-    const sampleFileUri = VSCode.Uri.joinPath(context.extensionUri, 'walkthrough', 'sample.py');
-    const sampleDocument = await VSCode.workspace.openTextDocument(sampleFileUri);
-    await VSCode.window.showTextDocument(sampleDocument, VSCode.ViewColumn.Beside);
-  }));
+  context.subscriptions.push(
+    VSCode.commands.registerCommand('SonarLint.OpenSample', async () => {
+      const sampleFileUri = VSCode.Uri.joinPath(context.extensionUri, 'walkthrough', 'sample.py');
+      const sampleDocument = await VSCode.workspace.openTextDocument(sampleFileUri);
+      await VSCode.window.showTextDocument(sampleDocument, VSCode.ViewColumn.Beside);
+    })
+  );
   context.subscriptions.push(VSCode.commands.registerCommand(Commands.SHOW_ALL_LOCATIONS, showAllLocations));
   context.subscriptions.push(VSCode.commands.registerCommand(Commands.CLEAR_LOCATIONS, clearLocations));
   context.subscriptions.push(VSCode.commands.registerCommand(Commands.NAVIGATE_TO_LOCATION, navigateToLocation));
@@ -460,15 +462,12 @@ function registerCommands(context: VSCode.ExtensionContext) {
     )
   );
   context.subscriptions.push(
-    VSCode.commands.registerCommand(
-      Commands.REOPEN_LOCAL_ISSUES,() => {
-        const currentlyOpenFilePath = VSCode.window.activeTextEditor.document.fileName;
-        //TODO better to get configurationScopeId straight in SonarLintLanguageServer using workspaceFoldersManager?
-        const configurationScopeId = VSCode.workspace.workspaceFolders[0].uri.toString();
-        IssueService.instance.reopenLocalIssues(currentlyOpenFilePath, configurationScopeId)
-      }
-)
-);
+    VSCode.commands.registerCommand(Commands.REOPEN_LOCAL_ISSUES, () => {
+      const currentlyOpenFilePath = VSCode.window.activeTextEditor.document.uri;
+      const configurationScopeId = VSCode.workspace.getWorkspaceFolder(currentlyOpenFilePath).uri.toString();
+      IssueService.instance.reopenLocalIssues(currentlyOpenFilePath.toString(), configurationScopeId);
+    })
+  );
   context.subscriptions.push(
     VSCode.commands.registerCommand(Commands.REMOVE_CONNECTION, async connection => {
       const connectionDeleted = await ConnectionSettingsService.instance.removeConnection(connection);
@@ -584,7 +583,9 @@ function installCustomRequestHandlers(context: VSCode.ExtensionContext) {
     protocol.AssistBinding.type,
     async params => await BindingService.instance.assistBinding(params)
   );
-  languageClient.onRequest(protocol.SslCertificateConfirmation.type, cert => showSslCertificateConfirmationDialog(cert))
+  languageClient.onRequest(protocol.SslCertificateConfirmation.type, cert =>
+    showSslCertificateConfirmationDialog(cert)
+  );
 }
 
 function updateSonarLintViewContainerBadge() {
