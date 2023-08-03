@@ -33,7 +33,7 @@ export class IssueService {
     return this.languageClient.changeIssueStatus(configScopeId, issueKey, newStatus, fileUri, comment, isTaintIssue);
   }
 
-  reopenLocalIssues(configurationScopeId: string, filePath: string): Promise<void> {
-    return this.languageClient.reopenResolvedLocalIssues(configurationScopeId, filePath);
+  reopenLocalIssues(configurationScopeId: string, relativePath: string, fileUri: string): Promise<void> {
+    return this.languageClient.reopenResolvedLocalIssues(configurationScopeId, relativePath, fileUri);
   }
 }

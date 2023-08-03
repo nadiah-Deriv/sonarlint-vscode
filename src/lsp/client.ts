@@ -108,8 +108,8 @@ export class SonarLintExtendedLanguageClient extends LanguageClient {
     });
   }
 
-  reopenResolvedLocalIssues(filePath: string, configurationScopeId: string): Promise<void> {
-    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, { configurationScopeId, filePath });
+  reopenResolvedLocalIssues(configurationScopeId: string, relativePath: string, fileUri: string): Promise<void> {
+    return this.sendNotification(protocol.ReopenResolvedLocalIssues.type, { configurationScopeId, relativePath, fileUri });
   }
 
   changeHotspotStatus(hotspotKey: string, newStatus: string, fileUri: string): Promise<void> {

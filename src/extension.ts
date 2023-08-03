@@ -28,18 +28,18 @@ import {
   HelpAndFeedbackTreeDataProvider
 } from './help/helpAndFeedbackTreeDataProvider';
 import {
-  HOTSPOTS_VIEW_ID,
+  changeHotspotStatus,
   getFilesForHotspotsAndLaunchScan,
   hideSecurityHotspot,
+  HOTSPOTS_VIEW_ID,
   showHotspotDescription,
-  showSecurityHotspot,
-  useProvidedFolderOrPickManuallyAndScan,
   showHotspotDetails,
-  changeHotspotStatus
+  showSecurityHotspot,
+  useProvidedFolderOrPickManuallyAndScan
 } from './hotspot/hotspots';
 import { AllHotspotsTreeDataProvider, HotspotNode, HotspotTreeViewItem } from './hotspot/hotspotsTreeDataProvider';
 import { getJavaConfig, installClasspathListener } from './java/java';
-import { LocationTreeItem, SecondaryLocationsTree, navigateToLocation } from './location/locations';
+import { LocationTreeItem, navigateToLocation, SecondaryLocationsTree } from './location/locations';
 import { SonarLintExtendedLanguageClient } from './lsp/client';
 import * as protocol from './lsp/protocol';
 import { languageServerCommand } from './lsp/server';
@@ -59,8 +59,8 @@ import {
 import { Commands } from './util/commands';
 import { getLogOutput, initLogOutput, logToSonarLintOutput, showLogOutput } from './util/logging';
 import { getPlatform } from './util/platform';
-import { JAVA_HOME_CONFIG, installManagedJre, resolveRequirements } from './util/requirements';
-import { code2ProtocolConverter, protocol2CodeConverter } from './util/uri';
+import { installManagedJre, JAVA_HOME_CONFIG, resolveRequirements } from './util/requirements';
+import { code2ProtocolConverter, getRelativePathWithFileNameFromFullPath, protocol2CodeConverter } from './util/uri';
 import * as util from './util/util';
 import { resolveIssueMultiStepInput } from './issue/resolveIssue';
 import { IssueService } from './issue/issue';
@@ -463,9 +463,13 @@ function registerCommands(context: VSCode.ExtensionContext) {
   );
   context.subscriptions.push(
     VSCode.commands.registerCommand(Commands.REOPEN_LOCAL_ISSUES, () => {
-      const currentlyOpenFilePath = VSCode.window.activeTextEditor.document.uri;
-      const configurationScopeId = VSCode.workspace.getWorkspaceFolder(currentlyOpenFilePath).uri.toString();
-      IssueService.instance.reopenLocalIssues(currentlyOpenFilePath.toString(), configurationScopeId);
+      const currentlyOpenFileUri = VSCode.window.activeTextEditor.document.uri;
+      const workspaceFolder = VSCode.workspace.getWorkspaceFolder(currentlyOpenFileUri);
+      const fileRelativePath = getRelativePathWithFileNameFromFullPath(currentlyOpenFileUri.toString(), workspaceFolder);
+      const unixStyleRelativePath = fileRelativePath.replace(/\\/g, '/');
+      IssueService.instance.reopenLocalIssues(code2ProtocolConverter(workspaceFolder.uri),
+        unixStyleRelativePath,
+        code2ProtocolConverter(currentlyOpenFileUri));
     })
   );
   context.subscriptions.push(

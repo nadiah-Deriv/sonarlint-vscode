@@ -466,8 +466,9 @@ export namespace ReopenResolvedLocalIssues {
 }
 
 export interface ReopenAllIssuesForFileParams {
-  filePath: string;
   configurationScopeId: string;
+  relativePath: string;
+  fileUri: string;
 }
 
 export namespace SetIssueStatus {
