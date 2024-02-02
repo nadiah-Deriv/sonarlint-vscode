@@ -848,7 +848,7 @@
     "find-java-home": "1.2.2",
     "follow-redirects": "1.15.1",
     "highlight.js": "^11.7.0",
-    "inly": "4.0.8",
+    "inly": "5.0.0",
     "luxon": "^3.2.1",
     "node-html-parser": "^6.1.5",
     "path-exists": "4.0.0",
